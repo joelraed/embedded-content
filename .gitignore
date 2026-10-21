@@ -13,3 +13,6 @@ node_modules/
 backups/
 *.sql
 *.sql.gz
+
+test-results/
+playwright-report/

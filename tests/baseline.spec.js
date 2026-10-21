@@ -1,0 +1,27 @@
+const { test, expect } = require('@playwright/test');
+const { login } = require('./helpers');
+test('contributed baseline: insert, edit, save, render', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await login(page);
+  await page.getByLabel('Text format', { exact: true }).selectOption('embedded_baseline');
+  await page.locator('.ck-button_embedded-content__default').waitFor();
+  await page.locator('.ck-editor__editable').click();
+  await page.locator('.ck-button_embedded-content__default').click();
+  const dialog = page.locator('.ui-dialog:visible');
+  await dialog.locator('select[name="config[plugin_id]"]').selectOption('example.call_to_action');
+  await dialog.locator('input[name="config[plugin_config][example.call_to_action][url]"]').fill('https://www.drupal.org');
+  await dialog.locator('input[name="config[plugin_config][example.call_to_action][text]"]').fill('Baseline insertion');
+  await dialog.getByRole('button', { name: 'Embed', exact: true }).click();
+  await expect(page.locator('.embedded-content-preview')).toContainText('Baseline insertion');
+  await page.locator('figure.ck-widget').click();
+  await page.locator('.ck-button_embedded-content__edit').click();
+  await dialog.locator('input[name="config[plugin_config][example.call_to_action][text]"]').fill('Baseline edited');
+  await dialog.getByRole('button', { name: 'Embed', exact: true }).click();
+  await expect(page.locator('figure.ck-widget')).toHaveCount(1);
+  await expect(page.locator('.embedded-content-preview')).toContainText('Baseline edited');
+  await page.getByLabel('Title', { exact: true }).fill('Baseline browser lifecycle');
+  await page.getByRole('button', { name: 'Save', exact: true }).click();
+  await expect(page.locator('article')).toContainText('Baseline edited');
+  expect(errors).toEqual([]);
+});

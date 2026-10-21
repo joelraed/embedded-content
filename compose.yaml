@@ -14,6 +14,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:?Create .env from .env.example}
       DRUPAL_HASH_SALT: ${DRUPAL_HASH_SALT:?Set a random hash salt}
       PHP_IDE_CONFIG: serverName=embedded-content
+      XDEBUG_MODE: debug
     depends_on:
       db:
         condition: service_healthy
@@ -40,5 +41,16 @@ services:
     depends_on:
       db:
         condition: service_healthy
+  browser:
+    image: mcr.microsoft.com/playwright:v1.56.1-noble
+    profiles: [test]
+    working_dir: /tests
+    volumes:
+      - ./:/tests
+    environment:
+      TEST_BASE_URL: http://web
+      TEST_LOGIN_URL: ${TEST_LOGIN_URL:-}
+    depends_on:
+      - web
 volumes:
   db_data:

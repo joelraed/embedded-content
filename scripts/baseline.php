@@ -1,6 +1,19 @@
 <?php
 use Drupal\editor\Entity\Editor;
 use Drupal\filter\Entity\FilterFormat;
+$type = \Drupal\node\Entity\NodeType::load('page');
+if (!$type) {
+  $type = \Drupal\node\Entity\NodeType::create(['type' => 'page', 'name' => 'Basic page']);
+  $type->save();
+}
+if (!\Drupal\field\Entity\FieldStorageConfig::loadByName('node', 'body')) {
+  \Drupal\field\Entity\FieldStorageConfig::create(['entity_type' => 'node', 'field_name' => 'body', 'type' => 'text_with_summary'])->save();
+}
+if (!\Drupal\field\Entity\FieldConfig::loadByName('node', 'page', 'body')) {
+  \Drupal\field\Entity\FieldConfig::create(['entity_type' => 'node', 'bundle' => 'page', 'field_name' => 'body', 'label' => 'Body'])->save();
+}
+\Drupal::service('entity_display.repository')->getFormDisplay('node', 'page')->setComponent('body', ['type' => 'text_textarea_with_summary'])->save();
+\Drupal::service('entity_display.repository')->getViewDisplay('node', 'page')->setComponent('body', ['type' => 'text_default'])->save();
 $format = FilterFormat::load('embedded_baseline') ?: FilterFormat::create([
   'format' => 'embedded_baseline', 'name' => 'Embedded Content baseline',
   'filters' => ['embedded_content' => ['id' => 'embedded_content', 'status' => TRUE, 'weight' => 100]],

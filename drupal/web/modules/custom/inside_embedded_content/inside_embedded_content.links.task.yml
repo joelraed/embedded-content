@@ -1,0 +1,4 @@
+inside_embedded_content.buttons:
+  title: 'Buttons'
+  route_name: entity.inside_embedded_content_button.collection
+  base_route: entity.inside_embedded_content_button.collection

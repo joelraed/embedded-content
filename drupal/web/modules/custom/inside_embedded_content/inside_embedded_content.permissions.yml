@@ -1,0 +1,5 @@
+administer embedded content:
+  title: 'Administer embedded content'
+
+permission_callbacks:
+  - \Drupal\inside_embedded_content\EmbeddedContentPermissions::getPermissions

@@ -1,0 +1,7 @@
+name: Inside Embedded Content
+type: module
+description: Plugin-based embedded components with CKEditor 5 off-canvas editing.
+package: Inside
+core_version_requirement: ^11
+dependencies:
+  - drupal:ckeditor5

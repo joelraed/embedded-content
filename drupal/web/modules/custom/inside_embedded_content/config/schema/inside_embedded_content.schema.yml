@@ -1,0 +1,47 @@
+inside_embedded_content.button.*:
+  type: config_entity
+  label: Embedded content
+  mapping:
+    id:
+      type: string
+      label: ID
+    label:
+      type: label
+      label: Label
+      description: 'The administrative label.'
+    settings:
+      type: mapping
+      label: 'Settings'
+      mapping:
+        label_singular:
+          type: label
+          label: Singular name
+          description: 'The singular name of the content to embed. Will appear in modals and the ckeditor button.'
+        submit_button_text:
+          type: label
+          label: 'Submit label'
+        modal_title:
+          type: label
+          label: 'Modal title'
+        conditions:
+          type: string
+          label: Condition
+        icon:
+          type: string
+          label: 'SVG code image'
+        condition:
+          type: string
+          label: 'Condition'
+        dialog_settings:
+          type: mapping
+          label: 'Dialog settings'
+          mapping:
+            width:
+              type: string
+              label: 'Dialog width'
+            height:
+              type: string
+              label: 'Dialog height'
+            type:
+              type: string
+              label: 'Dialog type'

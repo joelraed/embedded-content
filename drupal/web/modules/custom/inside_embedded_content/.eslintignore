@@ -1,0 +1,9 @@
+assets/vendor/**/*
+node_modules/**/*
+**/js_test_files/**/*
+**/build/**/*
+
+
+# Temporary until they are brought up to standards
+scripts/**/*
+modules/ckeditor5/webpack.config.js

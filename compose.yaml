@@ -1,0 +1,56 @@
+services:
+  web:
+    build: ./docker/php
+    ports:
+      - '127.0.0.1:8088:80'
+    volumes:
+      - ./drupal:/var/www/html
+      - ./config:/var/www/config
+      - ./scripts:/var/www/scripts:ro
+    environment:
+      DB_HOST: db
+      DB_NAME: embedded_content
+      DB_USER: drupal
+      DB_PASSWORD: ${DB_PASSWORD:?Create .env from .env.example}
+      DRUPAL_HASH_SALT: ${DRUPAL_HASH_SALT:?Set a random hash salt}
+      PHP_IDE_CONFIG: serverName=embedded-content
+      XDEBUG_MODE: debug
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: mariadb:11
+    environment:
+      MARIADB_DATABASE: embedded_content
+      MARIADB_USER: drupal
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Set a database root password}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ['CMD', 'healthcheck.sh', '--connect', '--innodb_initialized']
+      interval: 5s
+      timeout: 5s
+      retries: 30
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - '127.0.0.1:8089:80'
+    environment:
+      PMA_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+  browser:
+    image: mcr.microsoft.com/playwright:v1.56.1-noble
+    profiles: [test]
+    working_dir: /tests
+    volumes:
+      - ./:/tests
+    environment:
+      TEST_BASE_URL: http://web
+      TEST_LOGIN_URL: ${TEST_LOGIN_URL:-}
+    depends_on:
+      - web
+volumes:
+  db_data:

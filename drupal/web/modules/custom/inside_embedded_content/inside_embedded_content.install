@@ -1,0 +1,17 @@
+<?php
+
+/** @file Install-time compatibility checks. */
+
+/** Implements hook_requirements(). */
+function inside_embedded_content_requirements($phase) {
+  $requirements = [];
+  if ($phase === 'install' && \Drupal::moduleHandler()->moduleExists('embedded_content')) {
+    $requirements['inside_embedded_content_baseline'] = [
+      'title' => t('Inside Embedded Content baseline isolation'),
+      'value' => t('Contributed Embedded Content is enabled.'),
+      'description' => t('Back up the baseline database, remove its editor/filter configuration, and uninstall embedded_content before enabling Inside Embedded Content.'),
+      'severity' => REQUIREMENT_ERROR,
+    ];
+  }
+  return $requirements;
+}

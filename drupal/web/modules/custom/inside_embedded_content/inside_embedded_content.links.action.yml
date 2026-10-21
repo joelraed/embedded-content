@@ -1,0 +1,5 @@
+entity.inside_embedded_content_button.add_form:
+  route_name: 'entity.inside_embedded_content_button.add_form'
+  title: 'Add button'
+  appears_on:
+    - entity.inside_embedded_content_button.collection

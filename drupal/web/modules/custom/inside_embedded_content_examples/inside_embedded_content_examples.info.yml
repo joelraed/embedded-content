@@ -1,0 +1,8 @@
+name: Inside Embedded Content Examples
+type: module
+description: Adapted examples and dynamic AJAX component forms.
+package: Inside
+core_version_requirement: ^11
+dependencies:
+  - inside_embedded_content:inside_embedded_content
+  - media_library_form_element:media_library_form_element

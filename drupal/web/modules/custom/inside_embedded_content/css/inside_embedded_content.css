@@ -1,0 +1,25 @@
+.inside-embedded-content-preview{
+  display:inline-block;
+  padding: 1rem;
+  pointer-events: none;
+  border: 2px black dashed;
+}
+
+.inside-embedded-content-preview.inside-embedded-content-inline{
+  padding:.25rem;
+}
+
+.inside-embedded-content-preview-wrapper{
+  display: inline-block;
+}
+
+figure.inside-embedded-content-preview-wrapper{
+  display:block;
+  margin:0;
+}
+
+figure.inside-embedded-content-preview-wrapper.inside-embedded-content-inline{
+  display:inline-block;
+  margin:0 .25rem;
+}
+

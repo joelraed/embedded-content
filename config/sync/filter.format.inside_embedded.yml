@@ -1,0 +1,25 @@
+uuid: c0cf8331-8f88-46f3-bf6f-125c5bbb8061
+langcode: en
+status: true
+dependencies:
+  module:
+    - inside_embedded_content
+name: 'Inside Embedded Content'
+format: inside_embedded
+weight: 0
+filters:
+  filter_html:
+    id: filter_html
+    provider: filter
+    status: true
+    weight: -10
+    settings:
+      allowed_html: '<br> <p> <h2> <h3> <strong> <em> <a href> <embedded-content data-plugin-id data-plugin-config data-button-id> <embedded-content-inline data-plugin-id data-plugin-config data-button-id>'
+      filter_html_help: false
+      filter_html_nofollow: false
+  inside_embedded_content:
+    id: inside_embedded_content
+    provider: inside_embedded_content
+    status: true
+    weight: 100
+    settings: {  }

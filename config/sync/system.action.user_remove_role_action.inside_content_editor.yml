@@ -1,0 +1,14 @@
+uuid: 151b4f00-2283-496a-bc6f-5e51debf1405
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.inside_content_editor
+  module:
+    - user
+id: user_remove_role_action.inside_content_editor
+label: 'Remove the Inside content editor role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: inside_content_editor

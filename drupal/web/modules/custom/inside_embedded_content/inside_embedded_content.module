@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @file
+ * Hooks for inside_embedded_content.
+ */
+
+use Drupal\Core\Url;
+use Drupal\inside_embedded_content\Entity\EmbeddedContentButton;
+
+/**
+ * Implements hook_library_info_build().
+ *
+ * Create dynamic CSS files for each button.
+ */
+function inside_embedded_content_library_info_build() {
+  $libraries = [];
+  foreach (EmbeddedContentButton::loadMultiple() as $button) {
+    $libraries['inside_embedded_content.admin.' . $button->id()] = [
+      'css' => [
+        'theme' => [
+          Url::fromRoute('inside_embedded_content.inside_embedded_content_button.icon_css', [
+            'inside_embedded_content_button' => $button->id(),
+          ])->setAbsolute()->toString() => [],
+        ],
+      ],
+    ];
+  }
+  return $libraries;
+}

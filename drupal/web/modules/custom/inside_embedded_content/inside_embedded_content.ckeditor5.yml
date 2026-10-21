@@ -1,0 +1,9 @@
+inside_embedded_content_insideEmbeddedContent:
+  provider: inside_embedded_content
+  ckeditor5:
+    plugins:
+      - insideEmbeddedContent.EmbeddedContent
+    config:
+      insideEmbeddedContent: {}
+  drupal:
+    deriver: Drupal\inside_embedded_content\Plugin\Deriver\EmbeddedContentDeriver

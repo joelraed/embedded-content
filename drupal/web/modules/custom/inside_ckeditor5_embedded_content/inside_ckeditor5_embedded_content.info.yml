@@ -1,0 +1,7 @@
+name: Inside Embedded Content
+type: module
+description: Provides plugins for Ckeditor5 embedded content.
+package: niaid
+core_version_requirement: ^9.3 || ^10 || ^11
+dependencies:
+  - embedded_content

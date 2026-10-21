@@ -1,0 +1,23 @@
+{% if icon == "no" %}
+    {% if type == "email" %}
+        {% set destination_type = "cta-email-link cta-email-link__no-icon" %}
+    {% else %}
+        {% set destination_type = "cta-link" %}
+    {% endif %}
+{% elseif type == "internal" %}
+    {% set destination_type = "cta-internal-link" %}
+{% elseif type == "email" %}
+    {% set destination_type = "cta-email-link" %}
+{% elseif type == "file" %}
+    {% set destination_type = "cta-document-link" %}
+{% elseif type == "external" %}
+    {% set destination_type = "cta-external-link" %}
+{% endif %}
+
+{% if alignment == "right" %}
+    {% set alignment_class = "button__align-right" %}
+{% elseif alignment == "left" %}
+    {% set alignment_class = "button__align-left" %}
+{% endif %}
+
+<a href="{{ destination_uri }}" class="button-pl button--embed {{ destination_type }} {{ alignment_class }} waves-effect waves-light " title="{{ tooltip }}">{{ label }}</a>

@@ -1,0 +1,45 @@
+{% if type == "error" %}
+    <div aria-label="Error Message" class="block--status-message block--status-message--error">
+        <label class="block--status-message--label">
+            <span class="block--status-message--label__text">Error</span>
+        </label>
+{% elseif type == "info" %}
+  <div aria-label="Information Message" class="block--status-message block--status-message--information">
+    <label class="block--status-message--label">
+        <span class="block--status-message--label__text">Information</span>
+    </label>
+{% elseif type == "success" %}
+  <div aria-label="Success Message" class="block--status-message block--status-message--success">
+    <label class="block--status-message--label">
+        <span class="block--status-message--label__text">Success</span>
+    </label>
+{% elseif type == "warning" %}
+  <div aria-label="Warning Message" class="block--status-message block--status-message--warning">
+    <label class="block--status-message--label">
+        <span class="block--status-message--label__text">Warning</span>
+    </label>
+{% elseif type == "security" %}
+  <div aria-label="Security Message" class="block--status-message block--status-message--security">
+    <label class="block--status-message--label">
+        <span class="block--status-message--label__text">Security</span>
+    </label>
+{% elseif type == "generic" %}
+    {% if layout == "right" %}
+        <div aria-label="Generic Message" class="block--status-message block--status-message--generic block--status-message--generic--right-rail"> 
+    {% elseif layout == "full" %}
+        <div aria-label="Generic Message" class="block--status-message block--status-message--generic"> 
+    {% endif %}
+{% endif %}
+    <div class="block--status-message--content">
+        {% if title is not empty %}
+            <{{ titlestyle }}> {{ title }} </{{ titlestyle }}>
+        {% endif %}
+        {% set body = {
+            '#type':   'processed_text',
+            '#text':    body.value,
+            '#format': 'embed_content',
+        } %}
+        {{ body }}
+        {{ body.value }}
+    </div>
+</div>

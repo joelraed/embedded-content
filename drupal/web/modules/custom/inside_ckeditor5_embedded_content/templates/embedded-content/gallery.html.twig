@@ -1,0 +1,32 @@
+<div class="component-nds component--media-gallery" id="component-media-gallery-{{ rid }}">
+  {% if width == "25" %}
+    {% set grid = "col-12 col-sm-6 col-md-3" %}
+  {% elseif width == "33" %}
+    {% set grid = "col-12 col-sm-6 col-md-4" %}
+  {% elseif width == "50" %}
+    {% set grid = "col-12 col-sm-6" %}
+  {% endif %}
+  <div class="fluid-container">
+    <div class="row">
+      {% for key, item in items|sort((a, b) => a.order <=> b.order) %}
+        <div class="{{ grid }}">
+          <figure class="component-nds component--media">
+            <img class="image-pl image--default" src="{{ item['#image'] }}" alt="{{ item['#description'] }}"/>
+            {% if item['#caption'] or item['#credit'] %}
+              <figurecaption class="component--media__text">
+                <div class="component--media__text__content-wrapper">
+                  {% include "@atoms/text/text-image-credit-caption/_text-image-credit-caption-master.twig" with
+                    {
+                      "text_image_credit_caption_caption": item['#caption'],
+                      "text_image_credit_caption_credit": item['#credit']
+                    }
+                  %}
+                </div>
+              </figurecaption>
+            {% endif %}
+          </figure>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>

@@ -19,7 +19,7 @@ class EmbeddedContentPermissions {
   public function getPermissions(): array {
     $permissions = [];
     foreach (EmbeddedContentButton::loadMultiple() as $button) {
-      $permissions['use ' . $button->id() . ' embedded content button'] = [
+      $permissions['use ' . $button->id() . ' inside embedded content button'] = [
         'title' => new TranslatableMarkup(
             'Use @label embedded content button',
             [

@@ -42,6 +42,6 @@ inside_embedded_content.button.*:
             height:
               type: string
               label: 'Dialog height'
-            type:
+            renderer:
               type: string
               label: 'Dialog type'

@@ -1,37 +1,32 @@
-// eslint-disable-next-line import/no-unresolved
 import { Command } from 'ckeditor5/src/core';
-import { createEmbeddedContent } from './utils';
 
 export default class InsertEmbeddedContentCommand extends Command {
-  execute(attributes, element) {
+  refresh() {
+    const selected = this.editor.model.document.selection.getSelectedElement();
+    this.value = selected?.is('element', 'insideEmbeddedContent') || selected?.is('element', 'insideEmbeddedContentInline') || false;
+    this.isEnabled = this.editor.model.schema.checkChild(this.editor.model.document.selection.focus.parent, 'insideEmbeddedContent') || this.value || this.editor.model.schema.checkChild(this.editor.model.document.selection.focus.parent, 'insideEmbeddedContentInline');
+  }
+
+  execute(attributes, element, { target = null, position = null } = {}) {
     const { model } = this.editor;
-    const insideEmbeddedContentEditing = this.editor.plugins.get(
-      'insideEmbeddedContentEditing',
-    );
-
-    const dataAttributeMapping = Object.fromEntries(
-      Object.entries(insideEmbeddedContentEditing.attrs).map(([key, value]) => [
-        value,
-        key,
-      ]),
-    );
-
-    // \Drupal\inside_embedded_content\Form\EmbeddedContentDialog returns data in keyed by
-    // data-attributes used in view data. This converts data-attribute keys to
-    // keys used in model.
-    const modelAttributes = Object.fromEntries(
-      Object.keys(dataAttributeMapping)
-        .filter((attribute) => attributes[attribute])
-        .map((attribute) => [
-          dataAttributeMapping[attribute],
-          attributes[attribute],
-        ]),
-    );
-
-    model.change((writer) => {
-      model.insertContent(
-        createEmbeddedContent(writer, modelAttributes, element),
-      );
+    const attrs = {
+      dataPluginId: attributes['data-plugin-id'],
+      dataPluginConfig: attributes['data-plugin-config'],
+      dataButtonId: attributes['data-button-id'],
+    };
+    model.change(writer => {
+      if (target && target.name === element) {
+        writer.setAttributes(attrs, target);
+        writer.setSelection(target, 'on');
+      } else {
+        const replacement = writer.createElement(element, attrs);
+        if (target) {
+          model.insertContent(replacement, writer.createRangeOn(target));
+        } else {
+          model.insertContent(replacement, position?.toPosition());
+        }
+        writer.setSelection(replacement, 'on');
+      }
     });
   }
 }

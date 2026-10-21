@@ -96,12 +96,13 @@ class EmbeddedContent extends CKEditor5PluginDefault implements ContainerFactory
       $dynamic_plugin_config['insideEmbeddedContent']['buttons'][$inside_embedded_content_button->id()] = [
         'label' => $inside_embedded_content_button->label(),
         'iconUrl' => $inside_embedded_content_button->getIconUrl(),
+        'icon' => $inside_embedded_content_button->getIconSvg(),
         'dialogUrl' => Url::fromRoute(
             'inside_embedded_content.dialog', [
               'inside_embedded_content_button' => $inside_embedded_content_button->id(),
               'filter_format' => $editor->getFilterFormat()->id(),
             ]
-        )->toString(),
+        )->setOption('query', ['token' => $this->csrfTokenGenerator->get('inside-embedded-content/dialog/' . $inside_embedded_content_button->id() . '/' . $editor->getFilterFormat()->id())])->toString(),
         'dialogSettings' => $inside_embedded_content_button->getDialogSettings(),
       ];
     }

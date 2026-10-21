@@ -77,13 +77,13 @@ class EmbeddedContent extends FilterBase implements ContainerFactoryPluginInterf
       $plugin_config = Json::decode($node->getAttribute('data-plugin-config'));
       $plugin_id = $node->getAttribute('data-plugin-id');
       if (!$plugin_id) {
-        return;
+        continue;
       }
       try {
         /**
          * @var \Drupal\inside_embedded_content\EmbeddedContentInterface $instance
          */
-        $instance = $this->insideEmbeddedContentPluginManager->createInstance($plugin_id, $plugin_config ?? []);
+        $instance = $this->insideEmbeddedContentPluginManager->createInstance($plugin_id, is_array($plugin_config) ? $plugin_config : []);
         $bubbleable->addAttachments($instance->getAttachments());
         $replacement = $instance->build();
         $context = new RenderContext();
@@ -92,22 +92,21 @@ class EmbeddedContent extends FilterBase implements ContainerFactoryPluginInterf
           $bubbleable = $bubbleable->merge($context->pop());
         }
       }
-      catch (\Exception $e) {
-        $render = (new TranslatableMarkup(
-              'There is an issue with the embedded content plugin %plugin_id. Error: %error', [
-                '%plugin_id' => $plugin_id,
-                '%error' => $e->getMessage(),
-              ]
-          ))->render();
+      catch (\Throwable $e) {
+        \Drupal::logger('inside_embedded_content')->warning('Could not render plugin @id: @error', ['@id' => $plugin_id, '@error' => $e->getMessage()]);
+        $render = (new TranslatableMarkup('This embedded component is unavailable.'))->render();
       }
       // Replace the node with the rendered content.
       // @see https://www.drupal.org/project/inside_embedded_content/issues/3496686
-      libxml_use_internal_errors(TRUE);
+      $previous_errors = libxml_use_internal_errors(TRUE);
       $new = Html::load(Html::normalize($render));
       libxml_clear_errors();
       $xpath = new \DOMXPath($new);
-      $new_node = $document->importNode($xpath->query('//body')->item(0), TRUE);
-      libxml_use_internal_errors(FALSE);
+      $new_node = $document->createDocumentFragment();
+      foreach ($xpath->query('//body')->item(0)->childNodes as $child) {
+        $new_node->appendChild($document->importNode($child, TRUE));
+      }
+      libxml_use_internal_errors($previous_errors);
       $node->parentNode->replaceChild($new_node, $node);
 
     }

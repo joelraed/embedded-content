@@ -33,12 +33,12 @@ use Drupal\inside_embedded_content\Form\EmbeddedContentDialogForm;
  *     },
  *   },
  *   config_prefix = "button",
- *   admin_permission = "administer inside_embedded_content",
+ *   admin_permission = "administer inside embedded content",
  *   links = {
- *     "collection" = "/admin/structure/inside-embedded-content",
- *     "add-form" = "/admin/structure/inside-embedded-content/add",
- *     "edit-form" = "/admin/structure/inside-embedded-content/{inside_embedded_content_button}",
- *     "delete-form" = "/admin/structure/inside-embedded-content/{inside_embedded_content_button}/delete",
+ *     "collection" = "/admin/config/content/inside-embedded-content/button",
+ *     "add-form" = "/admin/config/content/inside-embedded-content/button/add",
+ *     "edit-form" = "/admin/config/content/inside-embedded-content/button/{inside_embedded_content_button}",
+ *     "delete-form" = "/admin/config/content/inside-embedded-content/button/{inside_embedded_content_button}/delete",
  *   },
  *   entity_keys = {
  *     "id" = "id",
@@ -150,7 +150,7 @@ final class EmbeddedContentButton extends ConfigEntityBase implements EmbeddedCo
         ],
       ],
       'drupal' => [
-        'label' => 'Embedded content',
+        'label' => 'Inside Embedded Content',
         'elements' => [
           '<embedded-content>',
           '<embedded-content-inline>',
@@ -207,7 +207,7 @@ final class EmbeddedContentButton extends ConfigEntityBase implements EmbeddedCo
     $settings = $this->getSettings();
     $dialog_settings = NestedArray::getValue($settings, ['dialog_settings']) ?? [];
     $dialog_settings = NestedArray::filter($dialog_settings);
-    return $dialog_settings + [
+    return ['renderer' => 'off_canvas'] + $dialog_settings + [
       'width' => EmbeddedContentDialogForm::DEFAULT_DIALOG_WIDTH,
       'height' => EmbeddedContentDialogForm::DEFAULT_DIALOG_HEIGHT,
       'title' => $this->t(

@@ -4,7 +4,8 @@
   "scripts": {
     "test": "playwright test",
     "test:baseline": "playwright test baseline",
-    "test:custom": "playwright test inside"
+    "test:custom": "playwright test inside",
+    "build": "webpack --config webpack.config.js"
   },
   "devDependencies": {
     "@playwright/test": "1.56.1",

@@ -1,11 +1,16 @@
 inside_embedded_content.dialog:
   path: '/inside-embedded-content/dialog/{inside_embedded_content_button}/{filter_format}'
   defaults:
-    _title_callback: '\Drupal\inside_embedded_content\Form\EmbeddedContentDialogForm::title'
-    _form: '\Drupal\inside_embedded_content\Form\EmbeddedContentDialogForm'
-    uuid: null
+    _controller: '\Drupal\inside_embedded_content\Controller\EmbeddedContentDialogController::open'
   requirements:
     _custom_access: '\Drupal\inside_embedded_content\Form\EmbeddedContentDialogForm::checkAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      inside_embedded_content_button:
+        type: 'entity:inside_embedded_content_button'
+      filter_format:
+        type: 'entity:filter_format'
 
 inside_embedded_content.preview:
   path: '/inside-embedded-content/preview/{editor}'
@@ -33,7 +38,7 @@ entity.inside_embedded_content_button.collection:
     _entity_list: 'inside_embedded_content_button'
     _title: 'Embedded content configuration'
   requirements:
-    _permission: 'administer embedded content'
+    _permission: 'administer inside embedded content'
 
 entity.inside_embedded_content_button.add_form:
   path: '/admin/config/content/inside-embedded-content/button/add'
@@ -41,7 +46,7 @@ entity.inside_embedded_content_button.add_form:
     _entity_form: 'inside_embedded_content_button.add'
     _title: 'Add an embedded content button'
   requirements:
-    _permission: 'administer inside_embedded_content'
+    _permission: 'administer inside embedded content'
 
 entity.inside_embedded_content_button.edit_form:
   path: '/admin/config/content/inside-embedded-content/button/{inside_embedded_content_button}'
@@ -49,7 +54,7 @@ entity.inside_embedded_content_button.edit_form:
     _entity_form: 'inside_embedded_content_button.edit'
     _title: 'Edit an embedded content button'
   requirements:
-    _permission: 'administer embedded content'
+    _permission: 'administer inside embedded content'
 
 entity.inside_embedded_content_button.delete_form:
   path: '/admin/config/content/inside-embedded-content/button/{inside_embedded_content_button}/delete'
@@ -57,7 +62,7 @@ entity.inside_embedded_content_button.delete_form:
     _entity_form: 'inside_embedded_content_button.delete'
     _title: 'Delete an embedded content button'
   requirements:
-    _permission: 'administer embedded content'
+    _permission: 'administer inside embedded content'
 
 inside_embedded_content.inside_embedded_content_button.icon:
   path: '/inside-embedded-content/icon/{inside_embedded_content_button}'

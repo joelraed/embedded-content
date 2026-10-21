@@ -62,7 +62,7 @@ class EmbeddedContentIconController extends ControllerBase {
    *   The access result.
    */
   public function checkAccess(AccountProxyInterface $account, EmbeddedContentButtonInterface $inside_embedded_content_button) {
-    return AccessResult::allowedIfHasPermission($account, 'use ' . $inside_embedded_content_button->id() . ' embedded content button');
+    return AccessResult::allowedIfHasPermission($account, 'use ' . $inside_embedded_content_button->id() . ' inside embedded content button');
   }
 
 }

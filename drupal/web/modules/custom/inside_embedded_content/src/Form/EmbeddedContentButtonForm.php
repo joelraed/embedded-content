@@ -113,7 +113,7 @@ final class EmbeddedContentButtonForm extends EntityForm {
       ],
       'modal_title' => [
         '#type' => 'textfield',
-        '#title' => $this->t('Modal title'),
+        '#title' => $this->t('Panel title'),
         '#description' => $this->t('Title to display in the modal. Leave empty to use the default modal title.'),
         '#default_value' => $this->entity->getSetting('modal_title'),
       ],
@@ -173,7 +173,7 @@ final class EmbeddedContentButtonForm extends EntityForm {
           '#title' => $this->t('Dialog renderer'),
           '#type' => 'select',
           '#options' => [
-            'modal' => $this->t('Modal'),
+
             'off_canvas' => $this->t('Off canvas'),
           ],
           '#required' => TRUE,
@@ -192,7 +192,7 @@ final class EmbeddedContentButtonForm extends EntityForm {
     $file = file_save_upload('settings', $this->getIconUploadValidators(), 'temporary://', 0);
 
     $settings = $form_state->getValue('settings');
-    $settings = NestedArray::mergeDeep($settings, $this->entity->getSettings());
+    $settings = NestedArray::mergeDeep($this->entity->getSettings(), $settings);
     unset($settings['icon_upload']);
     unset($settings['icon_preview']);
     if ($file) {

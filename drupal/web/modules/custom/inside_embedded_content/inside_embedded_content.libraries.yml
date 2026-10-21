@@ -7,9 +7,14 @@ inside_embedded_content:
   dependencies:
     - core/ckeditor5
     - core/ckeditor5.essentials
-    - editor/drupal.editor.dialog
+    - core/drupal.ajax
+    - core/jquery
+    - core/drupal.announce
     - core/drupal.dialog.off_canvas
 
 admin:
   js:
     js/admin.js: {  }
+  dependencies:
+    - core/drupal
+    - core/once

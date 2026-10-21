@@ -5,6 +5,8 @@ namespace Drupal\inside_embedded_content\Controller;
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Render\Renderer;
 use Drupal\Core\Session\AccountProxy;
@@ -63,28 +65,35 @@ class EmbeddedContentPreviewController extends ControllerBase {
    * Controller callback that renders the preview for CKeditor.
    */
   public function preview(Request $request) {
-    $content = Json::decode($request->getContent());
+    $content = $request->getPayload()->all();
     $plugin_id = $content['plugin_id'] ?? NULL;
     try {
       if (!$plugin_id) {
         throw new \Exception();
       }
-      $plugin_config = ($plugin_config = $content['plugin_config']) ? Xss::filter($plugin_config) : '';
+      $plugin_config = $content['plugin_config'] ?? '{}';
       $plugin_id = Xss::filter($plugin_id);
 
       /**
        * @var \Drupal\inside_embedded_content\EmbeddedContentInterface $instance
        */
-      $instance = $this->insideEmbeddedContentPluginManager->createInstance($plugin_id, ($plugin_config ? Json::decode($plugin_config) : []) ?? []);
+      $instance = $this->insideEmbeddedContentPluginManager->createInstance($plugin_id, (is_array(Json::decode($plugin_config)) ? Json::decode($plugin_config) : []));
       $build = $instance->build();
+      $build['#attached'] = $instance->getAttachments();
     }
-    catch (\Exception $e) {
+    catch (\Throwable $e) {
       $build = [
         'markup' => [
           '#type' => 'markup',
           '#markup' => $this->t('Incorrect configuration. Please recreate this embedded content.'),
         ],
       ];
+    }
+    $preview_id = $content['preview_id'] ?? '';
+    if (preg_match('/^inside-embedded-preview-[a-zA-Z0-9_-]+$/', $preview_id)) {
+      $response = new AjaxResponse();
+      $response->addCommand(new HtmlCommand('#' . $preview_id, $build));
+      return $response;
     }
     return new Response($this->renderer->renderRoot($build));
   }
@@ -101,7 +110,7 @@ class EmbeddedContentPreviewController extends ControllerBase {
    *   The acccess result.
    */
   public function checkAccess(AccountProxy $account, Editor $editor) {
-    return AccessResult::allowedIfHasPermission($account, 'use text format ' . $editor->getFilterFormat()->id());
+    return $editor->getFilterFormat()->access('use', $account, TRUE)->andIf(AccessResult::allowedIf($editor->getFilterFormat()->filters()->has('inside_embedded_content') && $editor->getFilterFormat()->filters('inside_embedded_content')->status))->addCacheableDependency($editor);
   }
 
 }

@@ -1,0 +1,15 @@
+.env
+.DS_Store
+drupal/vendor/
+drupal/web/core/
+drupal/web/modules/contrib/
+drupal/web/themes/contrib/
+drupal/web/profiles/contrib/
+drupal/web/sites/*/files/
+drupal/web/sites/*/settings.php
+drupal/web/sites/*/services.yml
+drupal/web/sites/*/settings.local.php
+node_modules/
+backups/
+*.sql
+*.sql.gz

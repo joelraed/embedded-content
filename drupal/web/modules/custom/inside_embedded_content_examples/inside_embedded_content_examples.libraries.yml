@@ -1,0 +1,9 @@
+counter:
+  js:
+    js/counter.js: {}
+  css:
+    theme:
+      css/counter.css: {}
+  dependencies:
+    - core/drupal
+    - core/once

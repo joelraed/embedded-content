@@ -16,3 +16,4 @@ backups/
 
 test-results/
 playwright-report/
+drupal/private/

@@ -1,0 +1,31 @@
+name: Drupal baseline and off-canvas regression
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Local test configuration
+        run: |
+          python3 - <<'PY'
+          import secrets
+          from pathlib import Path
+          Path('.env').write_text('DB_PASSWORD='+secrets.token_hex(24)+'\nDB_ROOT_PASSWORD='+secrets.token_hex(24)+'\nDRUPAL_HASH_SALT='+secrets.token_hex(48)+'\n')
+          PY
+      - run: npm ci
+      - run: scripts/install.sh
+      - run: docker compose --profile test pull browser
+      - run: scripts/browser-test.sh baseline
+      - run: scripts/switch-to-custom.sh
+      - run: docker compose exec -T web vendor/bin/drush php:script /var/www/scripts/regression.php
+      - run: scripts/browser-test.sh inside
+      - run: docker compose exec -T web vendor/bin/drush php:script /var/www/scripts/test-editor.php
+      - run: BROWSER_TEST_ACCOUNT=inside_editor_regression scripts/browser-test.sh inside --grep 'off-canvas insert'
+      - run: npm run build
+      - run: git diff --exit-code -- drupal/web/modules/custom/inside_embedded_content/js/build

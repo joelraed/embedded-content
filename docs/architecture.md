@@ -46,3 +46,21 @@ new manager. Plugin IDs can stay stable so existing content can be migrated.
 Original contrib files are managed only by Composer and remain unmodified.
 The two implementations are exercised sequentially; never enable both filters
 for the same text format or both CKEditor implementations in one editor.
+
+## Implemented lifecycle refinements
+
+The controller now constructs OpenOffCanvasDialogCommand explicitly. The preview
+controller can return a Drupal AJAX HtmlCommand carrying plugin assets. The client
+sends ajax_page_state so core does not reload existing libraries, executes the
+commands only for the current unique preview ID, and detaches behaviors before
+replacement/removal. Counter timers are per instance and stop on unload.
+
+Drupal 11.4 dispatches native dialog lifecycle events from the dialog element.
+The bridge listens once to dialog:beforeclose, rather than relying on legacy
+jQuery extra event arguments. Invalidation happens before AJAX removes the tray,
+so a close event cannot be lost when the detached element stops bubbling.
+
+Rebuild configuration reads raw nested input as defaults, but final Form API
+validation checks processed values. The plugin select exposes a data-inside-plugin
+attribute on the rebuilt container; tests wait for the selected form to finish
+rebuilding before submitting, including plugins with no configuration fields.

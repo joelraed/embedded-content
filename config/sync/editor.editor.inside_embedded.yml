@@ -1,0 +1,30 @@
+uuid: 41916087-74bc-47e7-930f-55cd670c70ef
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.inside_embedded
+  module:
+    - ckeditor5
+format: inside_embedded
+editor: ckeditor5
+settings:
+  toolbar:
+    items:
+      - heading
+      - bold
+      - italic
+      - link
+      - insideEmbeddedContent__default
+      - sourceEditing
+      - undo
+      - redo
+  plugins:
+    ckeditor5_heading:
+      enabled_headings:
+        - heading2
+        - heading3
+    ckeditor5_sourceEditing:
+      allowed_tags: {  }
+image_upload:
+  status: false

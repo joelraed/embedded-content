@@ -32,3 +32,42 @@ The post-response error persisted with automatic cron disabled. Core's database
 Connection.php documents that Xdebug develop mode changes destruction order. The
 web container now sets XDEBUG_MODE=debug (step debugging remains available), with
 no develop mode. This is an environment fix, with no contrib/core changes.
+
+## Final local results
+
+- Contributed baseline Chromium lifecycle: **1 passed** (insert, edit without
+  duplicates, save, front-end rendering), before the custom implementation.
+- Custom Chromium suite: **7 passed**. Covers the core lifecycle, nested validation,
+  unlimited accordion items, multiple components, undo/remove, inline/block
+  replacement, stale saves, native dialog closing/focus, nested Drupal modal,
+  nested styled-list CKEditors, attached preview behaviors and CSRF rejection.
+- Non-admin Inside content editor: **1 passed** for insert/edit/cancel/save/reopen
+  and front-end rendering using only the configured editor role.
+- Bootstrapped PHP integration script: **12 checks passed** for discovery, escaping,
+  nested rendering, malformed-tag resilience, library bubbling, access, forced
+  off-canvas settings, safe URI schemes and CKEditor config validation.
+- PHP syntax checks across both custom modules: passed.
+- Production Webpack build: passed with no warnings.
+- Composer platform checks, Drupal bootstrap, database connection and both local
+  HTTP endpoints: passed.
+
+Development failures were fixed and retained in logs for transparency: the initial
+missing page/body fixture, use of a nonexistent Editor::validate method (replaced
+with typed configuration validation), Xdebug develop shutdown errors, partial
+validation clearing selected plugin values, missing AJAX page-state information,
+and legacy jQuery dialog event assumptions. No core or contributed files were patched.
+Recent Drupal PHP errors are historical setup failures, not new errors from the
+passing suite. Missing-CSRF requests intentionally produce access-denied logs.
+
+Actual Media Library selection remains **untested** because the example plugins
+do not invoke it. A nested native Drupal modal and multiple CKEditors in the tray
+were exercised. Screen-reader, Safari/Firefox/mobile and collaborative-editing
+checks were not performed. GitHub Actions is configured but its remote result must
+be checked separately.
+
+To verify as a non-admin editor:
+
+```sh
+docker compose exec -T web vendor/bin/drush php:script /var/www/scripts/test-editor.php
+BROWSER_TEST_ACCOUNT=inside_editor_regression scripts/browser-test.sh inside --grep 'off-canvas insert'
+```

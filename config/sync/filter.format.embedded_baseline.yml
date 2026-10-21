@@ -1,0 +1,8 @@
+uuid: 53bfe071-2a49-4c0f-962b-20e91d47d8a6
+langcode: en
+status: true
+dependencies: {  }
+name: 'Embedded Content baseline'
+format: embedded_baseline
+weight: 0
+filters: {  }

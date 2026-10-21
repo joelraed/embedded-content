@@ -1,0 +1,14 @@
+uuid: 325eb693-8470-4db7-b533-5ac7dc3e171b
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.inside_content_editor
+  module:
+    - user
+id: user_add_role_action.inside_content_editor
+label: 'Add the Inside content editor role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: inside_content_editor

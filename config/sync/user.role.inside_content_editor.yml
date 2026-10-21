@@ -1,0 +1,22 @@
+uuid: 5875b0a5-a33e-4cc0-9c74-657a61e22288
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.inside_embedded
+    - node.type.page
+  module:
+    - filter
+    - inside_embedded_content
+    - node
+    - system
+id: inside_content_editor
+label: 'Inside content editor'
+weight: 4
+is_admin: false
+permissions:
+  - 'access content'
+  - 'create page content'
+  - 'edit own page content'
+  - 'use default inside embedded content button'
+  - 'use text format inside_embedded'

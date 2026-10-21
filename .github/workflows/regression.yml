@@ -24,8 +24,9 @@ jobs:
       - run: scripts/browser-test.sh baseline
       - run: scripts/switch-to-custom.sh
       - run: docker compose exec -T web vendor/bin/drush php:script /var/www/scripts/regression.php
-      - run: scripts/browser-test.sh inside
+      - run: scripts/browser-test.sh inside media
       - run: docker compose exec -T web vendor/bin/drush php:script /var/www/scripts/test-editor.php
       - run: BROWSER_TEST_ACCOUNT=inside_editor_regression scripts/browser-test.sh inside --grep 'off-canvas insert'
+      - run: BROWSER_TEST_ACCOUNT=inside_editor_regression scripts/browser-test.sh media
       - run: npm run build
       - run: git diff --exit-code -- drupal/web/modules/custom/inside_embedded_content/js/build

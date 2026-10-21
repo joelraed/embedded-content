@@ -4,10 +4,12 @@ status: true
 dependencies:
   config:
     - filter.format.inside_embedded
+    - media.type.image
     - node.type.page
   module:
     - filter
     - inside_embedded_content
+    - media
     - node
     - system
 id: inside_content_editor
@@ -16,7 +18,10 @@ weight: 4
 is_admin: false
 permissions:
   - 'access content'
+  - 'create image media'
   - 'create page content'
+  - 'edit own image media'
   - 'edit own page content'
   - 'use default inside embedded content button'
   - 'use text format inside_embedded'
+  - 'view media'

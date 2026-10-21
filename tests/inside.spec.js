@@ -20,7 +20,7 @@ async function init(page) {
 }
 test('inside: off-canvas insert, identity edit, cancel, save/reopen and render', async ({page}) => {
   const errors = [];
-  page.on('pageerror', error => errors.push(error.message));
+  page.on('pageerror', error => errors.push(error.stack));
   await init(page);
   await open(page, 'example.call_to_action');
   await expect(page.locator('.ui-widget-overlay')).toHaveCount(0);
@@ -95,7 +95,7 @@ test('inside: accordion add/remove beyond two items retains nested values', asyn
 
 test('inside: multiple components, remove/undo, inline replacement and stale callbacks', async ({page}) => {
   const errors = [];
-  page.on('pageerror', error => errors.push(error.message));
+  page.on('pageerror', error => errors.push(error.stack));
   await init(page);
   await open(page, 'example.call_to_action');
   await field(page, 'example.call_to_action', 'url').fill('https://www.drupal.org');
@@ -140,7 +140,7 @@ test('inside: multiple components, remove/undo, inline replacement and stale cal
 
 test('inside: close/reopen keyboard focus, nested Drupal dialog, CSRF access', async ({page}) => {
   const errors = [];
-  page.on('pageerror', error => errors.push(error.message));
+  page.on('pageerror', error => errors.push(error.stack));
   await init(page);
   for (let i=0;i<3;i++) {
     await open(page, 'example.call_to_action');
@@ -151,13 +151,15 @@ test('inside: close/reopen keyboard focus, nested Drupal dialog, CSRF access', a
     await expect(page.locator('.ck-editor__editable')).toBeFocused();
   }
   await open(page, 'example.call_to_action');
-  await page.evaluate(() => {
+  await page.evaluate(async () => {
     const element = document.createElement('div');
     element.id = 'inside-nested-dialog-test';
     element.innerHTML = '<label>Nested input <input></label>';
     document.body.append(element);
     window.insideNestedTestDialog = Drupal.dialog(element, {title: 'Nested Drupal dialog'});
+    const positioned = new Promise(resolve => element.addEventListener('dialogContentResize', resolve, {once:true}));
     window.insideNestedTestDialog.showModal();
+    await positioned;
   });
   await expect(page.locator('#inside-nested-dialog-test')).toBeVisible();
   await page.evaluate(() => window.insideNestedTestDialog.close());
@@ -173,7 +175,7 @@ test('inside: close/reopen keyboard focus, nested Drupal dialog, CSRF access', a
 
 test('inside: styled list nested CKEditors retain values across AJAX rebuilds', async ({page}) => {
   const errors = [];
-  page.on('pageerror', error => errors.push(error.message));
+  page.on('pageerror', error => errors.push(error.stack));
   await init(page);
   await open(page, 'example.styled_list');
   for (let i=0;i<3;i++) {
@@ -200,7 +202,7 @@ test('inside: styled list nested CKEditors retain values across AJAX rebuilds', 
 
 test('inside: stale document and target changes reject save; preview behaviors work', async ({page}) => {
   const errors = [];
-  page.on('pageerror', error => errors.push(error.message));
+  page.on('pageerror', error => errors.push(error.stack));
   await init(page);
   await open(page, 'example.counter');
   await field(page, 'example.counter', 'start_at').fill('20');

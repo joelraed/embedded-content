@@ -1,6 +1,6 @@
 FROM php:8.4-apache
-RUN apt-get update && apt-get install -y --no-install-recommends git unzip libicu-dev libzip-dev libpng-dev libjpeg62-turbo-dev libfreetype6-dev libonig-dev libxml2-dev default-mysql-client \
- && docker-php-ext-configure gd --with-freetype --with-jpeg \
+RUN apt-get update && apt-get install -y --no-install-recommends git unzip libicu-dev libzip-dev libpng-dev libjpeg62-turbo-dev libfreetype6-dev libwebp-dev libonig-dev libxml2-dev default-mysql-client \
+ && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
  && docker-php-ext-install -j$(nproc) gd intl pdo_mysql zip opcache bcmath mbstring \
  && pecl install xdebug && docker-php-ext-enable xdebug \
  && a2enmod rewrite headers && rm -rf /var/lib/apt/lists/*

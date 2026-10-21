@@ -64,3 +64,19 @@ Rebuild configuration reads raw nested input as defaults, but final Form API
 validation checks processed values. The plugin select exposes a data-inside-plugin
 attribute on the rebuilt container; tests wait for the selected form to finish
 rebuilding before submitting, including plugins with no configuration fields.
+
+
+## Media Library image example
+
+`inside.media_image` uses Media Library Form Element 2.1.5 with single-image
+cardinality, a caption and the standard Image media bundle. The selected media ID
+is stored as an integer in component JSON. Rendering checks media and source-field
+view access and bubbles media/access cache metadata; image-field rendering retains
+alt text and Drupal image styles.
+
+The contributed widget derives wrapper IDs from Form API parents, which include
+the dotted component plugin ID. A post-processor normalizes only the generated
+wrapper ID and matching AJAX callback wrapper values. The widget's original
+selection/open/remove implementation is reused. Nested media picker closes do not
+invalidate the component session, because its lifecycle listener only handles
+`#drupal-off-canvas`.

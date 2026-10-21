@@ -181,6 +181,36 @@ The examples demonstrate:
 - `example.styled_list`: dynamic items containing nested CKEditors.
 - `inside.notice`: an AJAX-dependent nested form and custom validation.
 - `inside.accordion`: arbitrary add/remove items, stable keys and native details.
+- `inside.media_image`: image upload/selection through Media Library Form Element, with caption, entity access checks and cache metadata.
+
+## Images in the off-canvas panel
+
+`drupal/media_library_form_element:^2.1` is installed at version 2.1.5. The custom
+examples module depends on it, which also enables core Media and Media Library.
+The standard Image media type is used; uploads include Drupal's required alt text.
+The PHP image includes GD WebP support for the default image styles.
+
+1. Create/edit a Basic page using the Inside Embedded Content text format.
+2. Open the component toolbar button and select **Image from Media Library**.
+3. Click **Add media**. The media picker opens above the off-canvas panel.
+4. Upload an image, enter its alternative text, click **Save**, then **Insert selected**.
+   Existing images can be selected directly from the library.
+5. Add an optional caption and click **Embed**, then save the page.
+
+Reopening the component retains the selected image and caption. Removing an image
+inside the panel and then canceling leaves the editor content unchanged. The
+Inside content editor role can view media and create/edit its own Image media.
+
+The adapter keeps the contributed `media_library` Form API implementation. It
+normalizes the widget's generated wrapper ID because dotted component plugin IDs
+otherwise become invalid AJAX CSS selectors. An empty-value callback delegates
+to the contributed callback while avoiding raw NULL input arrays on PHP 8.4.
+No contributed files are patched.
+
+```sh
+scripts/browser-test.sh media
+BROWSER_TEST_ACCOUNT=inside_editor_regression scripts/browser-test.sh media
+```
 
 ## AJAX form lifecycle
 
@@ -264,9 +294,9 @@ dialogs and missing-CSRF rejection. See docs/testing.md for actual results and l
 
 ## Known limits and future improvements
 
-- Actual Media Library selection was not exercised: no supplied plugin uses it.
-  A nested core Drupal modal inside the tray and nested CKEditors were tested;
-  this is not a claim of complete Media Library or contributed-widget compatibility.
+- Real image upload, existing-image selection, removal, nested-dialog cancel and
+  node save/reopen were tested through Media Library Form Element. Other media
+  types and additional contributed widgets have not been tested.
 - Chromium was automated; screen-reader, Safari, Firefox and mobile testing remain.
 - Collaborative editing and simultaneous edits to the same component need a more
   sophisticated merge policy. Current stale-save protection rejects conflicting

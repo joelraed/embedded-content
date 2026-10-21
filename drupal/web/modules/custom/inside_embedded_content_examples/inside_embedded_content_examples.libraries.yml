@@ -7,3 +7,8 @@ counter:
   dependencies:
     - core/drupal
     - core/once
+
+media_image:
+  css:
+    theme:
+      css/media-image.css: {}

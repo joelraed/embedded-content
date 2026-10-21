@@ -17,7 +17,7 @@ $violations = \Drupal::service('config.typed')->createFromNameAndData('editor.ed
 if (count($violations)) { throw new \RuntimeException((string) $violations); }
 echo "Inside format and CKEditor configuration valid.\n";
 $role = \Drupal\user\Entity\Role::load('inside_content_editor') ?: \Drupal\user\Entity\Role::create(['id' => 'inside_content_editor', 'label' => 'Inside content editor']);
-foreach (['access content', 'create page content', 'edit own page content', 'use text format inside_embedded', 'use default inside embedded content button'] as $permission) {
+foreach (['access content', 'create page content', 'edit own page content', 'use text format inside_embedded', 'use default inside embedded content button', 'view media', 'create image media', 'edit own image media'] as $permission) {
   $role->grantPermission($permission);
 }
 $role->save();

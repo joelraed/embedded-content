@@ -13,7 +13,7 @@ function verify($condition, string $message): void {
 }
 verify(!\Drupal::moduleHandler()->moduleExists('embedded_content'), 'contributed implementation disabled');
 $manager = \Drupal::service('plugin.manager.inside_embedded_content');
-verify(count($manager->getDefinitions()) === 6, 'six compatible example plugins discovered');
+verify(count($manager->getDefinitions()) === 7, 'seven compatible example plugins discovered');
 $filter = \Drupal::service('plugin.manager.filter')->createInstance('inside_embedded_content');
 $config = ['items' => ['one' => ['title' => '<script>escaped</script>', 'body' => 'First & second'], 'two' => ['title' => 'Second item', 'body' => 'Nested retained']]];
 $markup = '<embedded-content data-plugin-id="inside.accordion" data-plugin-config="' . Html::escape(Json::encode($config)) . '"></embedded-content>';

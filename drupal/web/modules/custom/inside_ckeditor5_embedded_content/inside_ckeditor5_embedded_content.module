@@ -1,0 +1,92 @@
+<?php
+
+/**
+ * @file
+ * The module file with theming functions.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function inside_ckeditor5_embedded_content_theme($existing, $type, $theme, $path) {
+  return [
+    'inside_ckeditor5_embedded_content_accordion' => [
+      'variables' => [
+        'aid' => NULL,
+        'type' => NULL,
+        'level' => NULL,
+        'items' => NULL,
+      ],
+      'template' => 'embedded-content/accordion',
+    ],
+    'inside_ckeditor5_embedded_content_imagegallery' => [
+      'variables' => [
+        'aid' => NULL,
+        'width' => NULL,
+        'items' => NULL,
+      ],
+      'template' => 'embedded-content/imagegallery',
+    ],
+    'inside_ckeditor5_embedded_content_gallery' => [
+      'variables' => [
+        'aid' => NULL,
+        'type' => NULL,
+        'items' => NULL,
+      ],
+      'template' => 'embedded-content/gallery',
+    ],
+    'inside_ckeditor5_embedded_content_calltoaction' => [
+      'variables' => [
+        'label' => NULL,
+        'type' => NULL,
+        'destination_uri' => NULL, 
+        'icon' => NULL,
+        'tooltip' => NULL,
+        'alignment' => NULL,
+      ],
+      'template' => 'embedded-content/calltoaction',
+    ],
+    'inside_ckeditor5_embedded_content_message' => [
+        'variables' => [
+          'type' => NULL,
+          'titlestyle' => NULL,
+          'title' => NULL,
+          'body' => NULL,
+          'layout' => NULL,
+        ],
+        'template' => 'embedded-content/message',
+      ],
+    'ckeditor5_gallery' => [
+      'variables' => [
+        'items' => NULL,
+        'rid' => NULL,
+        'width' => NULL,
+      ],
+      'template' => 'embedded-content/gallery',
+    ],
+    'inside_ckeditor5_embedded_content_video_gallery' => [
+      'variables' => [
+        'items' => NULL,
+        'rid' => NULL,
+        'width' => NULL,
+      ],
+      'template' => 'embedded-content/video-gallery',
+    ],
+    'inside_ckeditor5_embedded_content_video' => [
+      'variables' => [
+        'yt_video' => NULL,
+        'yt_title' => NULL,
+        'ms_video' => NULL,
+        'ms_title' => NULL,
+        'width' => NULL,
+        'alignment' => NULL,
+      ],
+      'template' => 'embedded-content/video',
+    ],
+  ];
+}
+
+function inside_ckeditor5_embedded_content_preprocess_html(array &$variables) : void {
+
+  $variables['#attached']['library'][] = 'inside_ckeditor5_embedded_content/inside-ckeditor5';
+}

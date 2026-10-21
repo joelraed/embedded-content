@@ -1,0 +1,26 @@
+<div class="component-nds component--media-gallery component--video-gallery" id="component-media-gallery-{{ rid }}">
+  {% if width == "25" %}
+    {% set grid = "col-12 col-sm-6 col-md-3" %}
+  {% elseif width == "33" %}
+    {% set grid = "col-12 col-sm-6 col-md-4" %}
+  {% elseif width == "50" %}
+    {% set grid = "col-12 col-sm-6" %}
+  {% endif %}
+  <div class="fluid-container">
+    <div class="row">
+      {% for key, item in items|sort((a, b) => a.order <=> b.order) %}
+        <div class="{{ grid }}">
+            {% if item['#type'] == "youtube" %}
+              {{ item['#video'] }}
+            {% elseif item['#type'] == "msstream" %}
+            <div class="component-nds component--video component--video__100-width">
+              <div class="media-nds media--video-youtube ">
+                <iframe class="media--video-youtube__iframe" style="width:100%" src="{{ item['#video'] }}&amp;embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&amp;referrer=StreamWebApp&amp;referrerScenario=EmbedDialog.Create" width="640" height="auto" frameborder="0" scrolling="no" allowfullscreen="" title="{{ item['#title'] }}"></iframe>
+              </div>
+            </div>
+            {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>

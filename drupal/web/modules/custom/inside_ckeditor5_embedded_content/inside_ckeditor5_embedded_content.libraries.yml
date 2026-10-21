@@ -1,0 +1,9 @@
+inside-ckeditor5:
+  version: 1.x
+  css:
+    theme:
+      css/media-gallery.css: {}
+  js:
+    js/masonry.js: {}
+    js/imagesloaded.js: {}
+    js/ivn-masonry.js: {}

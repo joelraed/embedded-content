@@ -1,0 +1,40 @@
+<div class="component--collapsible-content components-pl" id="accordion-{{ aid }}">
+  {% set level = level | default('h3') %}
+  {% if type == 'closed'%}
+    {% for key, item in items|sort((a, b) => a.order <=> b.order) %}
+      <div class="block--accordion-card card">
+        <div class="block--accordion-card__header card-header" id="heading-{{ aid }}-{{ key }}">
+          <{{ level }} class="mb-0"><button aria-controls="collapse-{{ aid }}-{{ key }}" aria-expanded="false" class="block--accordion-card__header__button btn btn-link" data-target="#collapse-{{ aid }}-{{ key }}" data-toggle="collapse" type="button">{{ item['#head'] }}</button></h2>
+        </div>
+
+        <div aria-labelledby="heading-{{ aid }}-{{ key }}" class="block--accordion-card__body collapse" id="collapse-{{ aid }}-{{ key }}">
+          <div class="card-body">{{ item['#text']|raw }}</div>
+        </div>
+      </div>
+    {% endfor %}
+  {% elseif type == 'first' %}
+    {% for key, item in items|sort((a, b) => a.order <=> b.order) %}
+       {% if key == 0 %}
+        <div class="block--accordion-card card">
+          <div class="block--accordion-card__header card-header" id="heading-{{ aid }}-{{ key }}">
+            <{{ level }} class="mb-0"><button aria-controls="collapse-{{ aid }}-{{ key }}" aria-expanded="true" class="block--accordion-card__header__button btn btn-link" data-target="#collapse-{{ aid }}-{{ key }}" data-toggle="collapse" type="button">{{ item['#head'] }}</button></>
+          </div>
+
+          <div aria-labelledby="heading-{{ aid }}-{{ key }}" class="block--accordion-card__body collapse show" id="collapse-{{ aid }}-{{ key }}">
+            <div class="card-body">{{ item['#text'] }}</div>
+          </div>
+        </div>
+       {% else %}
+         <div class="block--accordion-card card">
+           <div class="block--accordion-card__header card-header" id="heading-{{ aid }}-{{ key }}">
+             <{{ level }} class="mb-0"><button aria-controls="collapse-{{ aid }}-{{ key }}" aria-expanded="false" class="block--accordion-card__header__button btn btn-link" data-target="#collapse-{{ aid }}-{{ key }}" data-toggle="collapse" type="button">{{ item['#head'] }}</button></>
+           </div>
+
+           <div aria-labelledby="heading-{{ aid }}-{{ key }}" class="block--accordion-card__body collapse" id="collapse-{{ aid }}-{{ key }}">
+             <div class="card-body">{{ item['#text'] }}</div>
+           </div>
+         </div>
+       {% endif %}
+    {% endfor %}
+  {% endif %}
+</div>

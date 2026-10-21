@@ -1,0 +1,47 @@
+{% if width %}
+  {% if width == '100' %}
+   {%  set v_width = 'component--video__100-width' %}
+  {% elseif width == '25' %}
+    {% set v_width = 'component--video__25-width' %}
+  {% elseif width == '33' %}
+    {% set v_width = 'component--video__33-width' %}
+  {% elseif width == '50' %}
+    {% set v_width = 'component--video__50-width' %}
+  {% elseif width == '75' %}
+    {% set v_width = 'component--video__75-width' %}
+  {% endif %}
+{% else %}
+ {% set v_width = 'component--video__100-width' %}
+{% endif %}
+
+{% if alignment %}
+  {% if alignment == 'default' %}
+    {% set v_alginment = 'component--video__default' %}
+  {% elseif alignment == 'center' %}
+    {% set v_alignment = 'component--video__full' %}
+  {% elseif alignment == 'right' %}
+    {% set v_alignment = 'component--video__right' %}
+  {% elseif alignment == 'left' %}
+    {% set v_alignment = 'component--video__left' %}
+  {% endif %}
+{% else %}
+  {% set v_alignment = 'component--video__left' %}
+{% endif %}
+
+{% set component_video_float = 'right' %}
+
+{% if yt_video %}
+  <div class="component-nds component--video {{ v_width }} {{ v_alignment }}">
+    <div class="media-nds media--video-youtube ">
+      {{ yt_title }}
+      {{ yt_video|raw }}
+    </div>
+  </div>
+{% elseif ms_video %}
+<div class="component-nds component--video {{ v_width }} {{ v_alignment }}">
+  <div class="media-nds media--video-youtube ">
+    {{ ms_title }}
+  <iframe class="media--video-youtube__iframe" src="{{ ms_video }}" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen="" title="{{ ms_title }}"></iframe>
+  </div>
+</div>
+{% endif %}

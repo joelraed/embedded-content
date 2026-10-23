@@ -1,0 +1,19 @@
+uuid: 918f60c8-c51f-4d8c-b900-9a61177e8a4b
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.field_ms_stream_embed_iframe
+field_name: field_ms_stream_embed_iframe
+entity_type: media
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

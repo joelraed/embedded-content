@@ -1,0 +1,23 @@
+uuid: 6512e484-93af-4e31-a803-b0b4206105bf
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.legacy_roundtrip
+  module:
+    - ckeditor5
+format: legacy_roundtrip
+editor: ckeditor5
+settings:
+  toolbar:
+    items:
+      - bold
+      - italic
+      - link
+      - insideEmbeddedContent__default
+      - sourceEditing
+  plugins:
+    ckeditor5_sourceEditing:
+      allowed_tags: {  }
+image_upload:
+  status: false

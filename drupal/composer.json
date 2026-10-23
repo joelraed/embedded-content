@@ -22,6 +22,7 @@
         "drupal/core-recommended": "^11.4",
         "drupal/embedded_content": "^2.0",
         "drupal/embedded_content_examples-embedded_content_examples": "^2.0",
+        "drupal/linkit": "^7.0",
         "drupal/media_library_form_element": "^2.1",
         "drush/drush": "^13"
     },

@@ -4,8 +4,8 @@ namespace Drupal\inside_ckeditor5_embedded_content\Plugin\EmbeddedContent;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\embedded_content\EmbeddedContentInterface;
-use Drupal\embedded_content\EmbeddedContentPluginBase;
+use Drupal\inside_embedded_content\EmbeddedContentInterface;
+use Drupal\inside_embedded_content\EmbeddedContentPluginBase;
 use Drupal\file\Entity\File;
 use Drupal\media\Entity\Media;
 

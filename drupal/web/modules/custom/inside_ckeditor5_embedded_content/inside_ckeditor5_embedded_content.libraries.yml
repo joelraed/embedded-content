@@ -7,3 +7,7 @@ inside-ckeditor5:
     js/masonry.js: {}
     js/imagesloaded.js: {}
     js/ivn-masonry.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings

@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - filter.format.embed_content
     - filter.format.inside_embedded
     - media.type.image
     - node.type.page
@@ -23,5 +24,6 @@ permissions:
   - 'edit own image media'
   - 'edit own page content'
   - 'use default inside embedded content button'
+  - 'use text format embed_content'
   - 'use text format inside_embedded'
   - 'view media'

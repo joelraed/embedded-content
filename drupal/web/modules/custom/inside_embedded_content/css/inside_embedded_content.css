@@ -23,3 +23,12 @@ figure.inside-embedded-content-preview-wrapper.inside-embedded-content-inline{
   margin:0 .25rem;
 }
 
+/* Keep this module's configured tray width within the viewport. */
+.inside-embedded-content-panel {
+  max-width: 100vw;
+}
+
+/* Let plugin fieldsets shrink even when they specify a fixed inline minimum. */
+.inside-embedded-content-panel fieldset {
+  min-width: 0 !important;
+}

@@ -93,7 +93,7 @@ tags and their three data attributes. The provided format includes a restrictive
 HTML filter with those tags, rather than unrestricted author HTML.
 Button collections, icons, permissions, plugin conditions and panel width are
 managed at `/admin/config/content/inside-embedded-content/button`.
-Width is clamped to 300–1000 pixels; the default is 480 and the tray can be resized.
+Width is clamped to 300–1000 pixels; the fresh-install default is 480 and the tray can be resized. This site’s default button is configured to 960 pixels. Change it under Configuration → Content authoring → Inside Embedded Content → Buttons → Edit → Dialog settings → Dialog width. The width and fieldset sizing are scoped to Inside’s panel and constrained to the viewport.
 
 ## Architecture and differences from upstream
 

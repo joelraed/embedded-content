@@ -1,0 +1,19 @@
+uuid: ab8c9429-cdee-413a-a691-64303395a97f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_ms_stream_embed_iframe
+    - media.type.ms_stream_sharepoint
+id: media.ms_stream_sharepoint.field_ms_stream_embed_iframe
+field_name: field_ms_stream_embed_iframe
+entity_type: media
+bundle: ms_stream_sharepoint
+label: 'MS Stream iframe'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

@@ -4,4 +4,6 @@ description: Provides plugins for Ckeditor5 embedded content.
 package: niaid
 core_version_requirement: ^9.3 || ^10 || ^11
 dependencies:
-  - embedded_content
+  - inside_embedded_content:inside_embedded_content
+  - media_library_form_element:media_library_form_element
+  - linkit:linkit

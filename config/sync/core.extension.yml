@@ -19,11 +19,13 @@ module:
   filter: 0
   help: 0
   image: 0
+  inside_ckeditor5_embedded_content: 0
   inside_embedded_content: 0
   inside_embedded_content_examples: 0
   layout_builder: 0
   layout_discovery: 0
   link: 0
+  linkit: 0
   media: 0
   media_library: 0
   media_library_form_element: 0

@@ -1,0 +1,16 @@
+uuid: cd3cb3b3-334e-4e47-ad51-42607ff10674
+langcode: en
+status: true
+dependencies:
+  module:
+    - inside_embedded_content
+name: 'Contributed round-trip test'
+format: legacy_roundtrip
+weight: 0
+filters:
+  inside_embedded_content:
+    id: inside_embedded_content
+    provider: inside_embedded_content
+    status: true
+    weight: 100
+    settings: {  }

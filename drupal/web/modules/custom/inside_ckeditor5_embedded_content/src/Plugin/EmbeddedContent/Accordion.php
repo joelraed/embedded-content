@@ -73,39 +73,13 @@ class Accordion extends EmbeddedContentPluginBase implements EmbeddedContentInte
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
 
-    if (isset($this->configuration['items'])) {
-      $items = $this->configuration['items'];
-    }
-    elseif (isset($this->configuration['accordion']['items'])) {
-      $items = $this->configuration['accordion']['items'];
-    }
-    else {
-      $items = [];
-    }
-
-    usort($items, function ($a, $b) { return ($a['order'] ?? 0) - ($b['order'] ?? 0); });
-
-    if (empty($items)) {
-      $items[] = [];
-    }
-
-    if (!$form_state->get('items')) {
-      $form_state->set('items', $items);
-    }
-    else {
-      $items = $form_state->get('items');
-    }
-
-    if ($triggeringElement = $form_state->getTriggeringElement()) {
-      if (($triggeringElement['#op'] ?? '') == 'remove_item') {
-        unset($items[$triggeringElement['#delta']]);
-        $items = array_values($items);
-        $form_state->set('items', $items);
-      }
-      if (($triggeringElement['#op'] ?? '') == 'add_item') {
-        $items[] = [];
-        $form_state->set('items', $items);
-      }
+    $items = $this->configuration['items'] ?? $this->configuration['accordion']['items'] ?? [];
+    $keys = $form_state->get('custom_accordion_item_keys');
+    if ($keys === NULL) {
+      // Sort only when opening the dialog; preserve keys throughout AJAX rebuilds.
+      uasort($items, fn($a, $b) => ($a['order'] ?? 0) <=> ($b['order'] ?? 0));
+      $keys = array_keys($items ?: [0 => []]);
+      $form_state->set('custom_accordion_item_keys', $keys);
     }
 
     $raid = $this->configuration['aid'] ?? rand(10000, 99999);
@@ -151,7 +125,8 @@ class Accordion extends EmbeddedContentPluginBase implements EmbeddedContentInte
       ],
     ];
 
-    foreach ($items as $delta => $item) {
+    foreach ($keys as $delta) {
+      $item = $items[$delta] ?? [];
       $element = [
         '#type' => 'details',
         '#open' => TRUE,
@@ -181,8 +156,9 @@ class Accordion extends EmbeddedContentPluginBase implements EmbeddedContentInte
         '#required' => FALSE,
       ];
       $element['remove_item'] = [
-        '#type' => 'button',
+        '#type' => 'submit',
         '#limit_validation_errors' => [],
+        '#submit' => [[static::class, 'removeItem']],
         '#value' => $this->t('Remove item'),
         '#delta' => $delta,
         '#op' => 'remove_item',
@@ -196,8 +172,9 @@ class Accordion extends EmbeddedContentPluginBase implements EmbeddedContentInte
     }
 
     $form['add_item'] = [
-      '#type' => 'button',
+      '#type' => 'submit',
       '#limit_validation_errors' => [],
+      '#submit' => [[static::class, 'addItem']],
       '#value' => $this->t('Add item'),
       '#name' => 'add_item',
       '#op' => 'add_item',
@@ -207,6 +184,29 @@ class Accordion extends EmbeddedContentPluginBase implements EmbeddedContentInte
       ],
     ];
     return $form;
+  }
+
+  /** Add a stable key without renumbering existing input names. */
+  public static function addItem(array &$form, FormStateInterface $form_state): void {
+    $keys = $form_state->get('custom_accordion_item_keys');
+    $keys[] = 'item_' . bin2hex(random_bytes(6));
+    $form_state->set('custom_accordion_item_keys', $keys)->setRebuild();
+  }
+
+  /** Remove only the key belonging to the clicked button. */
+  public static function removeItem(array &$form, FormStateInterface $form_state): void {
+    $key = $form_state->getTriggeringElement()['#delta'];
+    $keys = array_values(array_filter($form_state->get('custom_accordion_item_keys'), fn($candidate) => $candidate !== $key));
+    $form_state->set('custom_accordion_item_keys', $keys)->setRebuild();
+  }
+
+  /** Keep the saved configuration as a list, excluding form action controls. */
+  public function massageFormValues(array &$values, array $form, FormStateInterface $form_state) {
+    unset($values['add_item']);
+    $values['items'] = array_values($values['items'] ?? []);
+    foreach ($values['items'] as &$item) {
+      unset($item['remove_item']);
+    }
   }
 
   /**

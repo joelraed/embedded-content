@@ -28,13 +28,13 @@ for (const plugin of ['calltoaction', 'message', 'accordion', 'imagegallery', 'v
       await field(page,plugin,'title').fill('Custom message test');
       await richText(page,field(page,plugin,'body][value'),'<p>Message body preserved.</p>');
     } else if (plugin === 'accordion') {
-      await field(page,plugin,'items][0][head').fill('First accordion item');
-      await richText(page,field(page,plugin,'items][0][body][value'),'<p>Accordion body preserved.</p>');
+      await panel(page).getByLabel('Accordion Item Title',{exact:true}).nth(0).fill('First accordion item');
+      await richText(page,panel(page).locator('textarea[name$="[body][value]"]').nth(0),'<p>Accordion body preserved.</p>');
       await panel(page).getByRole('button',{name:'Add item',exact:true}).click();
-      await expect(field(page,plugin,'items][1][head')).toBeVisible();
-      await expect(field(page,plugin,'items][0][head')).toHaveValue('First accordion item');
-      await field(page,plugin,'items][1][head').fill('Second accordion item');
-      await richText(page,field(page,plugin,'items][1][body][value'),'<p>Second body preserved.</p>');
+      await expect(panel(page).getByLabel('Accordion Item Title',{exact:true}).nth(1)).toBeVisible();
+      await expect(panel(page).getByLabel('Accordion Item Title',{exact:true}).nth(0)).toHaveValue('First accordion item');
+      await panel(page).getByLabel('Accordion Item Title',{exact:true}).nth(1).fill('Second accordion item');
+      await richText(page,panel(page).locator('textarea[name$="[body][value]"]').nth(1),'<p>Second body preserved.</p>');
     } else if (plugin === 'imagegallery') {
       await field(page,plugin,'width').selectOption('50');
       await field(page,plugin,'items][0][image').fill(`/media/${fixtures.image}`);
@@ -81,7 +81,7 @@ for (const plugin of ['calltoaction', 'message', 'accordion', 'imagegallery', 'v
     await expect(panel(page).locator('[name="config[plugin_id]"]')).toHaveValue(plugin);
     if (plugin === 'calltoaction') await expect(field(page,plugin,'label')).toHaveValue('Custom CTA test');
     if (plugin === 'message') await expect(field(page,plugin,'title')).toHaveValue('Custom message test');
-    if (plugin === 'accordion') await expect(field(page,plugin,'items][1][head')).toHaveValue('Second accordion item');
+    if (plugin === 'accordion') await expect(panel(page).getByLabel('Accordion Item Title',{exact:true}).nth(1)).toHaveValue('Second accordion item');
     if (plugin === 'imagegallery') await expect(field(page,plugin,'items][0][caption')).toHaveValue('Custom gallery caption');
     if (plugin === 'videogallery') await expect(field(page,plugin,'items][0][yt_video')).toHaveValue(`/media/${fixtures.video}`);
     if (plugin === 'video') await expect(panel(page).locator('.media-library-item')).toHaveCount(1);

@@ -1,0 +1,4 @@
+/* Core off-canvas resets must not reveal the widget's JS-only update control. */
+.inside-embedded-content-panel [data-inside-plugin="imagegallery"] .js-hide {
+  display: none;
+}

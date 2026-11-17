@@ -11,3 +11,8 @@ inside-ckeditor5:
     - core/jquery
     - core/drupal
     - core/drupalSettings
+
+image_gallery_form:
+  css:
+    component:
+      css/image-gallery-form.css: {}

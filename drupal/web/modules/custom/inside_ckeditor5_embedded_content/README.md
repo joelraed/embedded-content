@@ -49,3 +49,28 @@ again. The test checks actual image loading and that the nested CKEditor media
 markup stays identical after reopening. Accordion bodies must select the
 “Embedded component body” format to use this configuration. These tests exercise
 core Insert Media, separately from the custom `media_library` Form API widget.
+
+Image Gallery with Media Library Form Element
+--------------------------------------------
+
+The `imagegallery` plugin is labelled “Image Gallery.” Each item uses a
+single-image `media_library` Form API element, allowing existing-image selection
+or upload through a nested Media Library dialog. Image media bundles are detected
+from their image source plugin, including custom image bundles. Captions, credits,
+media-default toggles, ordering, and column width remain available. Stable form
+item keys keep add/remove operations and widget updates tied to the correct item.
+
+Newly saved `items[*].image` values are integer media IDs. Existing canonical
+`/media/123` paths and aliases still render and populate the selector when editing;
+saving the component converts those references to IDs. The plugin ID is unchanged.
+Entity Usage tracking accepts both representations when that optional module is
+installed. Rendering uses the source image's alt text and includes media access
+and cache metadata.
+
+For the gallery regression suite, first run `scripts/gallery-legacy-fixture.php`
+through Drush to create a fresh legacy-path fixture, then run
+`scripts/browser-test.sh image-gallery`. Tests cover upload, distinct existing
+images in multiple widgets, middle/last item removal, widget removal/reselection,
+nested cancellation, save/reopen, actual image loading, and legacy alias conversion.
+The same upload/selection test can run with
+`BROWSER_TEST_ACCOUNT=inside_editor_regression` and `--grep 'upload, select'`.

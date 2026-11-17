@@ -29,6 +29,8 @@ jobs:
       - run: BROWSER_TEST_ACCOUNT=inside_editor_regression scripts/browser-test.sh inside --grep 'off-canvas insert'
       - run: BROWSER_TEST_ACCOUNT=inside_editor_regression scripts/browser-test.sh media.spec.js
       - run: docker compose exec -T web vendor/bin/drush en inside_ckeditor5_embedded_content -y
-      - run: scripts/browser-test.sh accordion-removal
+      - run: docker compose exec -T web vendor/bin/drush php:script /var/www/scripts/gallery-legacy-fixture.php
+      - run: scripts/browser-test.sh accordion-removal image-gallery
+      - run: BROWSER_TEST_ACCOUNT=inside_editor_regression scripts/browser-test.sh image-gallery --grep 'upload, select'
       - run: npm run build
       - run: git diff --exit-code -- drupal/web/modules/custom/inside_embedded_content/js/build

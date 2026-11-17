@@ -37,7 +37,12 @@ for (const plugin of ['calltoaction', 'message', 'accordion', 'imagegallery', 'v
       await richText(page,panel(page).locator('textarea[name$="[body][value]"]').nth(1),'<p>Second body preserved.</p>');
     } else if (plugin === 'imagegallery') {
       await field(page,plugin,'width').selectOption('50');
-      await field(page,plugin,'items][0][image').fill(`/media/${fixtures.image}`);
+      await panel(page).getByRole('button',{name:'Add media',exact:true}).click();
+      const library = page.locator('#drupal-modal');
+      await library.locator('.js-media-library-item input[type=checkbox]').first().check();
+      await page.locator('.ui-dialog').filter({has:library}).getByRole('button',{name:'Insert selected',exact:true}).click();
+      await expect(library).not.toBeVisible();
+      await expect(panel(page).locator('.media-library-item')).toHaveCount(1);
       await field(page,plugin,'items][0][caption').fill('Custom gallery caption');
       await field(page,plugin,'items][0][credit').fill('Gallery credit');
     } else if (plugin === 'videogallery') {

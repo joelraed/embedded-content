@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class GalleryEmbeddedContent extends TextFieldEmbedBase {
 
   /**
-   * Maps each embedded content plugin ID to the config keys that hold media paths.
+   * Maps each embedded content plugin ID to the config keys that hold media paths or IDs.
    */
   const GALLERY_PLUGINS = [
     'imagegallery'  => ['image'],
@@ -71,11 +71,13 @@ class GalleryEmbeddedContent extends TextFieldEmbedBase {
         foreach ($items as $item) {
           foreach ($path_keys as $key) {
             $media_path = $item[$key] ?? NULL;
-            if (empty($media_path)) {
+            if (empty($media_path) || !is_scalar($media_path)) {
               continue;
             }
 
-            $internal_path = $this->aliasManager->getPathByAlias($media_path);
+            $internal_path = is_scalar($media_path) && ctype_digit((string) $media_path)
+              ? '/media/' . (int) $media_path
+              : $this->aliasManager->getPathByAlias($media_path);
             if (!preg_match('/^\/media\/(\d+)$/', $internal_path, $matches)) {
               continue;
             }
